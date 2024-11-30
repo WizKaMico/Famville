@@ -38,7 +38,6 @@
                              <label for="fromIns" class="form-label">From:</label>
                              <select name="fromIns" class="form-control" required="">
                                  <option value="">CHOOSE APPOINTMENT LOG</option>
-                                 <option value="WEB">WEB</option>
                                  <option value="WALKIN">WALKIN</option>
                              </select>
                          </div>
