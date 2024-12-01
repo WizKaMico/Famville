@@ -21,7 +21,6 @@ if(!empty($_GET['action']))
         if(isset($_POST['submit']))
         {
             $fullname = $_POST['fullname'];
-            $contact = $_POST['contact'];
             $dob = $_POST['dob'];
 
             function calculateAge($dob) {
@@ -39,7 +38,7 @@ if(!empty($_GET['action']))
             $uid = $account[0]['user_id'];
             $pid = date('ymd').'-'.rand(66666,99999);
             $fromIns = $_POST['fromIns'];
-            if(!empty($fullname) && !empty($contact) && !empty($dob) && !empty($age) && !empty($purpose) && !empty($purpose_description) && !empty($gender) && !empty($doa))
+            if(!empty($fullname) && !empty($dob) && !empty($age) && !empty($purpose) && !empty($purpose_description) && !empty($gender) && !empty($doa))
             {
                 $activity = 'ADD BOOKING '.$pid;
                 $result = $portCont->acceptBooking($fullname, $dob, $age, $purpose, $purpose_description, $gender, $doa, $uid, $pid, $fromIns);

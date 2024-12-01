@@ -10,10 +10,10 @@
                              <input type="text" class="form-control" id="fullname" placeholder="Enter Patient Name"
                                  name="fullname">
                          </div>
-                         <div class="mb-3 mt-3">
+                         <!-- <div class="mb-3 mt-3">
                              <label for="fullname" class="form-label">Contact:</label>
                              <input type="number" class="form-control" id="contact" name="contact" readonly="">
-                         </div>
+                         </div> -->
                          <div class="mb-3">
                              <label for="dob" class="form-label">Date of Birth:</label>
                              <input type="date" class="form-control" id="dob" placeholder="Enter Date of Birth"
@@ -26,7 +26,7 @@
                                  <option value="MALE">MALE</option>
                                  <option value="FEMALE">FEMALE</option>
                              </select>
-                         </div>fromIns
+                         </div>
                          <div class="mb-3">
                              <label for="purpose" class="form-label">Purpose of Visit:</label>
                              <select name="purpose" class="form-control" required="">

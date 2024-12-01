@@ -33,8 +33,8 @@
                                             <a href='#delete_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
                                         </td>
                                     </tr>";
+                                    include('route/account/modal/appointment_modal.php');
                                 }
-                                include('route/account/modal/appointment_modal.php');
                             }
                             ?>
                         </tbody>
