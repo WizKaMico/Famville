@@ -318,7 +318,7 @@ if(!empty($_GET['action']))
                     loadScript('assets/js/dt.js');
                     break;
                 case 'SCHEDULING':
-                    loadScript('assets/js/ap.js');
+                    loadScript('assets/js/ap_ad.js');
                     break;
                 case 'ACCOUNT':
                     loadScript('assets/js/dt.js');
