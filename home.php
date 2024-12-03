@@ -20,6 +20,7 @@ if(!empty($_GET['action']))
       case "BOOK":
         if(isset($_POST['submit']))
         {
+            $view = $_GET['view'];
             $fullname = $_POST['fullname'];
             $dob = $_POST['dob'];
 
@@ -45,12 +46,12 @@ if(!empty($_GET['action']))
                 $activity = $portCont->activityLog($uid,$activity);
                 if(!empty($result) && !empty($activity))
                 {
-                    header('Location: ?view=BOOK&pid='.$pid.'&message=success');
+                    header('Location: ?view='.$view.'&pid='.$pid.'&message=success');
                     exit;
                 }
                 else
                 {
-                    header('Location: ?view=BOOK&message=failed');
+                    header('Location: ?view='.$view.'&message=failed');
                     exit;
                 }
             }

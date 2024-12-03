@@ -26,7 +26,7 @@
                                  <option value="MALE">MALE</option>
                                  <option value="FEMALE">FEMALE</option>
                              </select>
-                         </div>fromIns
+                         </div>
                          <div class="mb-3">
                              <label for="purpose" class="form-label">Purpose of Visit:</label>
                              <select name="purpose" class="form-control" required="">
