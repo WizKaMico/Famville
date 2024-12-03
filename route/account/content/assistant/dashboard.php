@@ -6,12 +6,12 @@
     </div>
     <div class="col-md-4">
         <div class="main-card mb-3 card">
-            <div class="card-header">Appointments Today : <?php echo $statResched[0]['total']; ?></div>
+            <div class="card-header">Appointments Today : <?php echo $statBooked[0]['total']; ?></div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="main-card mb-3 card">
-            <div class="card-header">Reschedule Appointments : <?php echo $statBooked[0]['total']; ?></div>
+            <div class="card-header">Reschedule Appointments :  <?php echo $statResched[0]['total']; ?></div>
         </div>
     </div>
 </div>
