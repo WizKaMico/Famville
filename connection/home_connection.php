@@ -233,7 +233,7 @@ class famVille extends DBController
 
      function showStatsAppointmentRescheduled()
     {
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED' AND schedule_date = CURDATE()";   
+        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED'";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
