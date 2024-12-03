@@ -332,7 +332,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointment($uid)
     {
-         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND schedule_date >= CURDATE() AND status = 'BOOKED'";
+         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND status = 'BOOKED'";
         
         $params = array(
             array(
