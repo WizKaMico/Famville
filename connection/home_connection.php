@@ -332,7 +332,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointment($uid)
     {
-         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND status != 'CANCELLED'";
+         $query = "SELECT * FROM fam_appointment WHERE uid = ?";
         
         $params = array(
             array(
@@ -347,7 +347,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointmentA()
     {
-        $query = "SELECT * FROM fam_appointment WHERE status != 'CANCELLED'";
+        $query = "SELECT * FROM fam_appointment";
         $AccountResult = $this->getDBResult($query);
         return $AccountResult;
     }
