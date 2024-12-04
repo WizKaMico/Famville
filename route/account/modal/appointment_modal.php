@@ -167,10 +167,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span> Cancel</button>
-                <button type="submit" name="edit" class="btn btn-success"><span
-                        class="glyphicon glyphicon-check"></span> Update</a>
                     </form>
             </div>
 

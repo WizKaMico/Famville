@@ -19,20 +19,23 @@
                             $appointment = $portCont->getAllUpcomingAppointmentA();
                             if (!empty($appointment)) {
                                 foreach ($appointment as $key => $value) {
-                                    echo 
-                                    "<tr>
-                                        <td>".$value['aid']."</td>
-                                        <td>".$value['pid']."</td>
-                                        <td>".$value['fullname']."</td>
-                                        <td>".$value['purpose']."</td>
-                                        <td>".$value['schedule_date']."</td>
-                                        <td>
-                                            <a href='#edit_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-calendar'></i></span> Reschedule</a>
-                                            <a href='#assistantinformation_".$value['aid']."' class='btn btn-warning btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-user'></i></span> Information</a>
-                                            <a href='#delete_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
-                                        </td>
-                                    </tr>";
-                                    include('route/account/modal/appointment_modal.php');
+                                    if($value['status'] != 'CANCELLED')
+                                    {
+                                        echo 
+                                        "<tr>
+                                            <td>".$value['aid']."</td>
+                                            <td>".$value['pid']."</td>
+                                            <td>".$value['fullname']."</td>
+                                            <td>".$value['purpose']."</td>
+                                            <td>".$value['schedule_date']."</td>
+                                            <td>
+                                                <a href='#edit_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-calendar'></i></span> Reschedule</a>
+                                                <a href='#assistantinformation_".$value['aid']."' class='btn btn-warning btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-user'></i></span> Information</a>
+                                                <a href='#delete_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
+                                            </td>
+                                        </tr>";
+                                        include('route/account/modal/appointment_modal.php');
+                                    }
                                 }
                             }
                             ?>
