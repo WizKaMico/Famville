@@ -112,6 +112,7 @@ class famVille extends DBController
     
     function aAddInquiry($name, $email, $subject, $message)
     {
+        date_default_timezone_set('Asia/Manila');
          $query = "INSERT INTO fam_inquiry (name, email, subject, message, date_created) VALUES ( ?, ?, ?, ?, ?)";
         
         $params = array(
@@ -225,7 +226,9 @@ class famVille extends DBController
 
      function showStatsAppointmentCancelled()
     {
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='CANCELLED' AND schedule_date = CURDATE()";   
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='CANCELLED' AND schedule_date = '$date'";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
@@ -233,14 +236,18 @@ class famVille extends DBController
 
      function showStatsAppointmentRescheduled()
     {
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED' AND schedule_date = CURDATE()";   
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED' AND schedule_date = '$date'";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
 
      function showStatsAppointmentBooked()
     {
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='BOOKED' AND schedule_date = CURDATE()";   
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='BOOKED' AND schedule_date = '$date'";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
@@ -349,14 +356,18 @@ class famVille extends DBController
 
     function getAllUpcomingAppointmentA()
     {
-        $query = "SELECT * FROM fam_appointment WHERE schedule_date = CURDATE()";
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $query = "SELECT * FROM fam_appointment WHERE schedule_date = '$date'";
         $AccountResult = $this->getDBResult($query);
         return $AccountResult;
     }
 
     function getAllPastAppointment($uid)
     {
-         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND schedule_date < CURDATE() AND status = 'DONE'";
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND schedule_date < '$date' AND status = 'DONE'";
         
         $params = array(
             array(
@@ -470,6 +481,7 @@ class famVille extends DBController
 
     function activityLog($uid,$activity)
     {
+        date_default_timezone_set('Asia/Manila');
          $query = "INSERT INTO fam_user_activity (uid, activity, date_created) VALUES (?, ?, ?)";
         $params = array(
             array(
@@ -523,6 +535,7 @@ class famVille extends DBController
 
     function acceptBooking($fullname, $dob, $age, $purpose, $purpose_description, $gender, $doa, $uid, $pid, $fromIns)
     {
+        date_default_timezone_set('Asia/Manila');
         $query = "INSERT INTO fam_appointment (pid, uid, date_birth, age, fullname, purpose, purpose_description, gender, schedule_date, status, fromIns, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'BOOKED', ?, ?)";
         $code = rand(666666,999999);
         $params = array(
