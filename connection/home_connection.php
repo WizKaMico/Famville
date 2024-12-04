@@ -233,7 +233,7 @@ class famVille extends DBController
 
      function showStatsAppointmentRescheduled()
     {
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED'";   
+        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED' AND schedule_date = CURDATE()";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
@@ -332,7 +332,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointment($uid)
     {
-         $query = "SELECT * FROM fam_appointment WHERE uid = ?";
+         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND status != 'CANCELLED'";
         
         $params = array(
             array(
@@ -347,7 +347,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointmentA()
     {
-        $query = "SELECT * FROM fam_appointment";
+        $query = "SELECT * FROM fam_appointment WHERE schedule_date = CURDATE()";
         $AccountResult = $this->getDBResult($query);
         return $AccountResult;
     }

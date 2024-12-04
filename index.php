@@ -160,7 +160,12 @@ if(!empty($_GET['action']))
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-    <?php include('component/alert/alert.php'); ?>
+    <?php 
+    if(!empty($_GET['view']))
+    {
+        include('component/alert/alert.php'); 
+    }
+    ?>
     <!-- =======================================================
   * Template Name: Family Vill Clinic
   * Updated: Nov 13, 2024
