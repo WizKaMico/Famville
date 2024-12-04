@@ -248,7 +248,9 @@ class famVille extends DBController
 
      function showStatsAppointmentBookedList()
     {
-        $query = "SELECT * FROM fam_appointment WHERE status='BOOKED' AND schedule_date = CURDATE()";   
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $query = "SELECT * FROM fam_appointment WHERE status IN ('BOOKED','RESCHEDULED') AND schedule_date = '$date'";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
