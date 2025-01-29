@@ -10,6 +10,7 @@
                             <th>ID</th>
                             <th>PID</th>
                             <th>PATIENT NAME</th>
+                            <th>PATIENT AGE</th>
                             <th>PURPOSE</th>
                             <th>DATE OF APPOINTMENT</th>
                             <th>ACTION</th>
@@ -20,13 +21,12 @@
                             $appointment = $portCont->getAllUpcomingAppointment($uid);
                             if (!empty($appointment)) {
                                 foreach ($appointment as $key => $value) {
-                                    if($value['status'] != 'CANCELLED')
-                                    {
                                         echo 
                                         "<tr>
                                             <td>".$value['aid']."</td>
                                             <td>".$value['pid']."</td>
                                             <td>".$value['fullname']."</td>
+                                            <td>".$value['age']."</td>
                                             <td>".$value['purpose']."</td>
                                             <td>".$value['schedule_date']."</td>
                                             <td>
@@ -35,8 +35,7 @@
                                                 <a href='#delete_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
                                             </td>
                                         </tr>";
-                                        include('route/account/modal/appointment_modal.php');
-                                    }
+                                        include('../route/account/modal/appointment_modal.php');
                                 }
                             }
                             ?>
@@ -56,11 +55,11 @@
                 <div class="col-md-12 mt-2">
                     <table id="pastTable" class="align-middle mb-0 table table-borderless table-striped table-hover">
                         <thead>
-                            <th>ID</th>
                             <th>PID</th>
                             <th>PATIENT NAME</th>
                             <th>PURPOSE</th>
                             <th>DATE OF APPOINTMENT</th>
+                            <th>DIAGNOSIS</th>
                         </thead>
                         <tbody>
                             <?php
@@ -70,11 +69,11 @@
                                 foreach ($appointment as $key => $value) {
                                     echo 
                                     "<tr>
-                                        <td>".$value['aid']."</td>   
                                         <td>".$value['pid']."</td>
                                         <td>".$value['fullname']."</td>
                                         <td>".$value['purpose']."</td>
                                         <td>".$value['schedule_date']."</td>
+                                        <td>".$value['diagnosis']."</td>
                                     </tr>";
                                 }
                             }

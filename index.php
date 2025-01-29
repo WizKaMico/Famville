@@ -9,17 +9,27 @@ if(!empty($_GET['action']))
       case "CONTACTS":
         if(isset($_POST['submit']))
         {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $subject = $_POST['subject'];
-            $message = $_POST['message'];
+            $name = filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING);
+            $email = filter_input(INPUT_POST,"email", FILTER_SANITIZE_EMAIL);
+            $subject = filter_input(INPUT_POST,"subject", FILTER_SANITIZE_STRING);
+            $message = filter_input(INPUT_POST,"message", FILTER_SANITIZE_STRING);
             if(!empty($name) && !empty($email) && !empty($subject) && !empty($message))
             {
-                $result = $portCont->aAddInquiry($name, $email, $subject, $message);
-                if (!empty($result)) {
-                     header('Location:?view=HOME&message=success');
-                }else{
-                     header('Location:?view=HOME&message=failed');
+                try
+                {
+                    $result = $portCont->aAddInquiry($name, $email, $subject, $message);
+                    $inquiryEmail = $result[0]["email"];
+                    $inquirySubject = $result[0]["subject"];
+                    $inquiryMessage = $result[0]["message"];
+                    if(!empty($inquiryEmail) && !empty($inquirySubject) && !empty($inquiryMessage))
+                    {
+                        require("./connection/mail/inquiryEmail.php");
+                        header('Location:?view=HOME&message=success');
+                    }
+                }
+                catch(Exception $e)
+                {
+                    header('Location:?view=HOME&message=failed');
                 }
             }
         }
@@ -27,20 +37,28 @@ if(!empty($_GET['action']))
       case "REGISTER":
         if(isset($_POST['submit']))
         {
-            $username = $_POST['username'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $fullname = $_POST['fullname'];
-            $email = $_POST['email'];
-            $contact = $_POST['contact'];
-            $address = $_POST['address'];
-            if(!empty($username) && !empty($email) && !empty($password) && !empty($fullname) && !empty($email) && !empty($contact) && !empty($address))
+            $username = filter_input(INPUT_POST,"username",FILTER_SANITIZE_STRING);
+            $email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING);
+            $fullname = filter_input(INPUT_POST,"fullname",FILTER_SANITIZE_STRING);
+            $contact = filter_input(INPUT_POST,"contact",FILTER_SANITIZE_STRING);
+            $address = filter_input(INPUT_POST,"address",FILTER_SANITIZE_STRING);
+            if(!empty($username) && !empty($email) && !empty($password) && !empty($fullname) && !empty($contact) && !empty($address))
             {
-                $result = $portCont->aAddAccount($username, $email, $password, $fullname, $address, $contact);
-                if (!empty($result)) {
-                     header('Location:?view=VERIFICATION&email='.$email.'&message=success');
-                }else{
-                     header('Location:?view=REGISTER&message=failed');
+                try
+                {
+                    $result = $portCont->aAddAccount($username, $email, $password, $fullname, $address, $contact);
+                    $userCode = $result[0]["code"];
+                    $userEmail = $result[0]["email"];
+                    if(!empty($userCode) && !empty($userEmail))
+                    {
+                        require("./connection/mail/verification.php");
+                        header('Location:?view=VERIFICATION&email='.$userEmail.'&message=success');
+                    }
+                }
+                catch(Exception $e)
+                {
+                    header('Location:?view=REGISTER&message=failed');
                 }
             }
 
@@ -49,17 +67,20 @@ if(!empty($_GET['action']))
        case "VERIFY":
          if(isset($_POST['submit']))
          {
-            $code = $_POST['code'];
-            $email = $_POST['email'];
+            $code = filter_input(INPUT_POST,"code",FILTER_SANITIZE_STRING);
+            $email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL);
             if(!empty($code) && !empty($email))
             {
-                $result = $portCont->lSearchAccountVerification($code, $email);
-                if(!empty($result))
+                try
                 {
-                    $portCont->AccountVerificationCompleted($code, $email);
-                    header('Location:?view=HOME&message=success');
+                    $result = $portCont->lSearchAccountVerification($code,$email);
+                    $resultEmail = $result[0]["email"];
+                    if(!empty($resultEmail))
+                    {
+                        header('Location:?view=HOME&message=success&email='.$resultEmail);
+                    }
                 }
-                else
+                catch(Exception $e)
                 {
                     header('Location:?view=VERIFICATION&email='.$email.'&message=failed');
                 }
@@ -69,15 +90,21 @@ if(!empty($_GET['action']))
         case "FORGOT":
           if(isset($_POST['submit'])) 
           {
-             $email = $_POST['email'];
+             $email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL);
              if(!empty($email))
              {
-                $result = $portCont->lSearchAccount($email);
-                if(!empty($result))
+                try
                 {
-                     header('Location:?view=NEWPASSWORD&email='.$email.'&message=success');
+                    $result = $portCont->lSearchAccount($email);
+                    $emailAccount = $result[0]["email"];
+                    $codeAccount = $result[0]["code"];
+                    if(!empty($emailAccount) && !empty($codeAccount))
+                    {
+                        require("./connection/mail/forgot.php");
+                        header('Location:?view=NEWPASSWORD&email='.$email.'&message=success');
+                    }
                 }
-                else
+                catch(Exception $e)
                 {
                     header('Location:?view=FORGOT&message=failed');
                 }
@@ -87,17 +114,23 @@ if(!empty($_GET['action']))
         case "NEWPASSWORD":
           if(isset($_POST['submit'])) 
           {
-             $email = $_POST['email'];
-             $password = $_POST['password'];
-             if(!empty($email))
+             $email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL);
+             $password = filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING);
+             $code = filter_input(INPUT_POST,"code",FILTER_SANITIZE_STRING);   
+             if(!empty($email) && !empty($password) && !empty($code))
              {
-                $result = $portCont->lSearchAccount($email);
-                if(!empty($result))
+                try
                 {
-                    $portCont->AccountNewPasswordUpdate($password, $email);
-                     header('Location:?view=HOME&message=success');
+                    $result = $portCont->AccountNewPasswordUpdate($password, $email, $code);
+                    $emailExist = $result[0]["email"]; 
+                    $newPassword = $result[0]["unhashed"];
+                    if(!empty($emailExist) && !empty($newPassword))
+                    {
+                        require("./connection/mail/newPasswordConfirmation.php");
+                        header('Location:?view=HOME&message=success&email='.$emailExist);
+                    }
                 }
-                else
+                catch(Exception $e)
                 {
                     header('Location:?view=NEWPASSWORD&email='.$email.'&message=failed');
                 }
@@ -107,20 +140,24 @@ if(!empty($_GET['action']))
         case "LOGIN":
          if(isset($_POST['submit'])) 
           {
-             $username = $_POST['username'];
-             $password = md5($_POST['password']);
+             $username = filter_input(INPUT_POST,"username",FILTER_SANITIZE_STRING);
+             $password = md5(filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING));
              if(!empty($username) && !empty($password))
              {
-                $result = $portCont->lSearchAccountLogin($username, $password);
-                if(!empty($result))
-                {
-                     $_SESSION['user_id'] = $result[0]['user_id'];   
-                     header('Location:home.php?view=HOME'); 
-                     exit;
+                try
+                {   
+                    $result = $portCont->lSearchAccountLogin($username, $password);
+                    $accounUid = $result[0]["user_id"];
+                    if(!empty($accounUid))
+                    {
+                        $_SESSION['user_id'] = $accounUid; 
+                        header('Location: ./account/?view=HOME'); 
+                        exit;
+                    }
                 }
-                else
+                catch(Exception $e)
                 {
-                     header('Location:?view=HOME&message=failed');
+                    header('Location:?view=HOME&message=failed');
                 }
              }
           }

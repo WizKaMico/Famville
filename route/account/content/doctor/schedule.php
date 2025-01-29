@@ -31,7 +31,13 @@
                              <label for="purpose" class="form-label">Purpose of Visit:</label>
                              <select name="purpose" class="form-control" required="">
                                  <option value="">CHOOSE PURPOSE</option>
-                                 <option value="CHECKUP">CHECKUP</option>
+                                 <?php 
+                                     $purpose = $portCont->showPurpose();
+                                     if (!empty($purpose)) {
+                                         foreach ($purpose as $key => $value) {
+                                   ?>
+                                   <option value="<?php echo $value['purpose']; ?>"><?php echo $value['purpose']; ?></option>
+                                   <?php } } ?>
                              </select>
                          </div>
                          <div class="mb-3">

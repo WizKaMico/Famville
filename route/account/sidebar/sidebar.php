@@ -40,25 +40,25 @@
                  ?>
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="?view=HOME" class="mm-active">
+                    <a href="?view=HOME" class="mm-active" style="text-decoration:none;">
                         <i class="fa fa-tachometer"></i>
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="?view=PATIENT">
+                    <a href="?view=PATIENT"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Patient Management
                     </a>
                 </li>
                 <li>
-                    <a href="?view=SCHEDULING">
+                    <a href="?view=SCHEDULING"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Appointment Scheduling
                     </a>
                 </li>
                 <li>
-                    <a href="?view=REPORTS">
+                    <a href="?view=REPORTS"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Reports
                     </a>
@@ -66,25 +66,31 @@
                 <?php } else if($role == 2) { ?>
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="?view=HOME" class="mm-active">
+                    <a href="?view=HOME" class="mm-active"  style="text-decoration:none;">
                         <i class="fa fa-tachometer"></i>
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="?view=PATIENT">
+                    <a href="?view=PATIENT"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Patient Management
                     </a>
                 </li>
                 <li>
-                    <a href="?view=SCHEDULING">
+                    <a href="?view=DOCSERVE"  style="text-decoration:none;">
+                        <i class="fa fa-users"></i>
+                       Doctors & Service
+                    </a>
+                </li>
+                <li>
+                    <a href="?view=SCHEDULING"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Appointment Scheduling
                     </a>
                 </li>
                 <li>
-                    <a href="?view=REPORTS">
+                    <a href="?view=REPORTS"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Reports
                     </a>
@@ -92,13 +98,13 @@
                 <?php } else { ?>
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="?view=HOME" class="mm-active">
+                    <a href="?view=HOME" class="mm-active"  style="text-decoration:none;">
                         <i class="fa fa-tachometer"></i>
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="?view=BOOK">
+                    <a href="?view=BOOK"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Book Appointment
                     </a>

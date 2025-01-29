@@ -1,19 +1,28 @@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="main-card mb-3 card">
-            <div class="card-header">Cancelled Appointments : <?php echo $statCancelled[0]['total']; ?></div>
+            <div class="card-header"><i class="fa fa-calendar"></i>&nbsp;  Cancelled Appointments : <?php echo $statCancelled[0]['total']; ?></div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="main-card mb-3 card">
-            <div class="card-header">Appointments Today : <?php echo $statBooked[0]['total']; ?></div>
+            <div class="card-header"><i class="fa fa-calendar"></i>&nbsp;   Appointments Today : <?php echo $statBooked[0]['total']; ?></div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="main-card mb-3 card">
-            <div class="card-header">Reschedule Appointments :  <?php echo $statResched[0]['total']; ?></div>
+            <div class="card-header"><i class="fa fa-calendar"></i>&nbsp;   Reschedule Appointments :  <?php echo $statResched[0]['total']; ?></div>
         </div>
     </div>
+
+    <div class="col-md-3">
+        <div class="main-card mb-3 card">
+            <div class="card-header"><i class="fa fa-calendar"></i>&nbsp;   Completed Appointments :  <?php echo $statCompleted[0]['total']; ?></div>
+        </div>
+    </div>
+
+
+    
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -26,8 +35,14 @@
                             <th>ID</th>
                             <th>PID</th>
                             <th>PATIENT NAME</th>
+                            <th>AGE</th>
                             <th>PURPOSE</th>
                             <th>DATE OF APPOINTMENT</th>
+                            <th>DOCTOR</th>
+                            <th>DIAGNOSIS</th>
+                            <th>STATUS</th>
+                            <th>ALERT</th>
+                            <th>ACTION</th>
                         </thead>
                         <tbody>
                             <?php
@@ -40,9 +55,22 @@
                                         <td>".$value['aid']."</td>   
                                         <td>".$value['pid']."</td>
                                         <td>".$value['fullname']."</td>
+                                        <td>".$value['age']."</td>
                                         <td>".$value['purpose']."</td>
                                         <td>".$value['schedule_date']."</td>
+                                        <td>Dr. ".$value['doctor']."</td>
+                                        <td>".$value['diagnosis']."</td>
+                                        <td>".$value['status']."</td>
+                                        <td>
+                                        <a href='#notifysms_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-comment-alt'></i></span> SMS</a>
+                                        <a href='#notifyemail_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-envelope-o'></i></span> EMAIL</a>
+                                        </td>
+                                        <td>
+                                        <a href='#assigndoctor_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-user-plus'></i></span> Assign</a>
+                                        <a href='#bookingComplete_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-calendar-check-o'></i></span> Complete</a>
+                                        </td>
                                     </tr>";
+                                    include('../route/account/modal/appointment_modal.php');
                                 }
                             }
                             ?>

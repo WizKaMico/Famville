@@ -43,6 +43,11 @@ window.onload = function() {
                                    <input type="hidden" name="email" class="form-control"
                                        value="<?php echo $_GET['email']; ?>" required="">
 
+                                    <div class="col-md-12 ">
+                                       <input type="number" id="code" class="form-control" name="code"
+                                           placeholder="6-Digit Code" required="">
+                                   </div>
+
                                    <div class="col-md-12 ">
                                        <input type="password" id="password" class="form-control" name="password"
                                            placeholder="Password" required="">

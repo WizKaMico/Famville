@@ -97,7 +97,7 @@ class famVille extends DBController
 
     function myAccount($session_id)
     {
-       $query = "SELECT * FROM fam_user FU LEFT JOIN fam_role FR ON FU.role = FR.role_id WHERE user_id = ?";
+       $query = "CALL famville_accountLogin(?)";
         
         $params = array(
             array(
@@ -113,7 +113,7 @@ class famVille extends DBController
     function aAddInquiry($name, $email, $subject, $message)
     {
         date_default_timezone_set('Asia/Manila');
-         $query = "INSERT INTO fam_inquiry (name, email, subject, message, date_created) VALUES ( ?, ?, ?, ?, ?)";
+         $query = "CALL famville_insertInquiry(?,?,?,?)";
         
         $params = array(
             array(
@@ -131,20 +131,16 @@ class famVille extends DBController
             array(
                 "param_type" => "s",
                 "param_value" => $message
-            ),
-            array(
-                "param_type" => "s",
-                "param_value" => date("Y-m-d")
             )
         );
         
-        $contact_id = $this->insertDB($query, $params);
-        return $contact_id;
+        $inquiryResult = $this->getDBResult($query, $params);
+        return $inquiryResult;
     }
     
     function aAddAccount($username, $email, $password, $fullname, $address, $contact)
     {
-        $query = "INSERT INTO fam_user (username, email, password, unhashed, role, fullname, address, phone, status, code, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "CALL famville_createAccount (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $code = rand(666666,999999);
         $params = array(
             array(
@@ -186,30 +182,26 @@ class famVille extends DBController
              array(
                 "param_type" => "s",
                 "param_value" => $code 
-            ),
-            array(
-                "param_type" => "s",
-                "param_value" => date("Y-m-d")
             )
         );
         
-        $register_id = $this->insertDB($query, $params);
-        return $register_id;
+        $account = $this->getDBResult($query, $params);
+        return $account;
     }
 
 
     function lSearchAccountVerification($code, $email)
     {
-        $query = "SELECT * FROM fam_user WHERE code=? AND email = ?";
+        $query = "CALL famville_accountVerification (?,?)";
         
         $params = array(
             array(
                 "param_type" => "s",
-                "param_value" => $code
+                "param_value" => $email
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $email
+                "param_value" => $code
             )
         );
         
@@ -219,16 +211,14 @@ class famVille extends DBController
 
     function iNoticeShow()
     {
-        $query = "SELECT * FROM fam_notice WHERE status='ACTIVE'";   
+        $query = "CALL famville_notice;";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
 
      function showStatsAppointmentCancelled()
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='CANCELLED' AND schedule_date = '$date'";   
+        $query = "CALL famville_showStatsAppointmentCancelled;";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
@@ -236,18 +226,21 @@ class famVille extends DBController
 
      function showStatsAppointmentRescheduled()
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='RESCHEDULED' AND schedule_date = '$date'";   
+        $query = "CALL famville_showStatsAppointmentRescheduled;";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
 
      function showStatsAppointmentBooked()
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-        $query = "SELECT COUNT(*) as total FROM fam_appointment WHERE status='BOOKED' AND schedule_date = '$date'";   
+        $query = "CALL famville_showStatsAppointmentBooked;";   
+        $AccountNotice = $this->getDBResult($query);
+        return $AccountNotice;
+    }
+
+    function showStatsAppointmentCompleted()
+    {
+        $query = "CALL famville_showStatsAppointmentCompleted;";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
@@ -255,15 +248,152 @@ class famVille extends DBController
 
      function showStatsAppointmentBookedList()
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-        $query = "SELECT * FROM fam_appointment WHERE status IN ('BOOKED','RESCHEDULED') AND schedule_date = '$date'";   
+        $query = "CALL famville_showStatsAppointmentBookedList;";   
         $AccountNotice = $this->getDBResult($query);
         return $AccountNotice;
     }
 
+    function showDoctors()
+    {
+        $query = "CALL famville_showDoctors;";   
+        $doctorsResult = $this->getDBResult($query);
+        return $doctorsResult;
+    }
 
+    function updateDoctor($docid, $doctor)
+    {
+        $query = "CALL famville_updateDoctor(?,?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $docid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $doctor
+            )
+        );
+        
+        $DoctorResult = $this->getDBResult($query, $params);
+        return $DoctorResult;
+    }
 
+    function updatePurpose($purpose_id, $purpose)
+    {
+        $query = "CALL famville_updatePurpose(?,?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $purpose_id
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $purpose
+            )
+        );
+        
+        $PurposeResult = $this->getDBResult($query, $params);
+        return $PurposeResult;
+    }
+
+    function deletePurpose($purpose_id)
+    {
+        $query = "DELETE FROM fam_purpose WHERE purpose_id = ?";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $purpose_id
+            )
+        );
+        
+        $PurposeResult = $this->getDBResult($query, $params);
+        return $PurposeResult;
+    }
+
+    function showPurpose()
+    {
+        $query = "CALL famville_viewPurpose;";   
+        $purposeResult = $this->getDBResult($query);
+        return $purposeResult;
+    }
+
+    function AssignDoctor($aid,$attending_physician,$diagnosis)
+    {
+        $query = "CALL famville_patientAppointmentDoctor(?,?,?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $aid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $attending_physician
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $diagnosis
+            )
+        );
+        
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
+    }
+
+    function completedBookingAndActivityLog($aid)
+    {
+        $query = "CALL famville_completedBookingAndActivityLog(?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $aid
+            )
+        );
+        
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
+    }
+
+    function notifyAccountForAppointment($aid)
+    {
+        $query = "CALL famville_notifyAccountForAppointment(?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $aid
+            )
+        );
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
+    function createDoctor($doctor)
+    {
+        $query = "CALL famville_createDoctor(?)";
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $doctor
+            )
+        );
+        
+        $DoctorResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
+    function createPurpose($purpose)
+    {
+        $query = "CALL famville_createPurpose(?)";
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $purpose
+            )
+        );
+        
+        $PurposeResult = $this->getDBResult($query, $params);
+        return $PurposeResult;
+    }
 
     function AccountVerificationCompleted($code, $email)
     {
@@ -285,12 +415,16 @@ class famVille extends DBController
 
     function lSearchAccount($email)
     {
-         $query = "SELECT * FROM fam_user WHERE email = ?";
-        
+        $query = "CALL famville_accountSearchViaEmail(?,?)";
+        $code = rand(666666,999999);
         $params = array(
             array(
                 "param_type" => "s",
                 "param_value" => $email
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $code
             )
         );
         
@@ -298,9 +432,9 @@ class famVille extends DBController
         return $AccountResult;
     }
 
-    function AccountNewPasswordUpdate($password, $email)
+    function AccountNewPasswordUpdate($password, $email, $code)
     {
-        $query = "UPDATE fam_user SET  password = ?, unhashed = ? WHERE  email = ?";
+        $query = "CALL famville_accountNewPasswordUpdate(?,?,?,?)";
         
         $params = array(
             array(
@@ -314,15 +448,20 @@ class famVille extends DBController
             array(
                 "param_type" => "s",
                 "param_value" => $email
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $code
             )
         );
         
-        $this->updateDB($query, $params);
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
     }
 
     function lSearchAccountLogin($username, $password)
     {
-        $query = "SELECT * FROM fam_user WHERE username = ? AND password = ? AND status = 'VERIFIED'";
+        $query = "CALL famville_accountLoginValidation(?,?)";
         
         $params = array(
             array(
@@ -341,7 +480,7 @@ class famVille extends DBController
 
     function getAllUpcomingAppointment($uid)
     {
-         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND status != 'CANCELLED'";
+         $query = "CALL famville_patientAccountAppointment(?)";
         
         $params = array(
             array(
@@ -354,20 +493,44 @@ class famVille extends DBController
         return $AccountResult;
     }
 
-    function getAllUpcomingAppointmentA()
+    function patientAccountHistory($uid)
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-        $query = "SELECT * FROM fam_appointment WHERE schedule_date = '$date'";
+        $query = "CALL famville_patientAccountHistory(?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $uid
+            )
+        );
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
+    function doctorAccountHistory($docid)
+    {
+        $query = "CALL famville_doctorAccountHistory(?)";
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $docid
+            )
+        );
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
+    function patientAccount()
+    {
+        $query = "CALL accountHistory";
         $AccountResult = $this->getDBResult($query);
         return $AccountResult;
     }
 
     function getAllPastAppointment($uid)
     {
-        date_default_timezone_set('Asia/Manila');
-        $date = date('Y-m-d');
-         $query = "SELECT * FROM fam_appointment WHERE uid = ? AND schedule_date < '$date' AND status = 'DONE'";
+        $query = "CALL famville_accountPastAppointment(?)";
         
         $params = array(
             array(
@@ -395,41 +558,55 @@ class famVille extends DBController
         return $AccountResult;
     }
 
-    function updateBooking($id, $doa)
+    function getReports($date_appointment)
     {
-        $query = "UPDATE fam_appointment SET  schedule_date = ?, status = 'RESCHEDULED' WHERE  aid = ?";
+        $query = "CALL appointment_reports(?);";
         
         $params = array(
             array(
                 "param_type" => "s",
-                "param_value" => $doa
-            ),
-            array(
-                "param_type" => "s",
-                "param_value" => $id
+                "param_value" => $date_appointment
             )
         );
-    
-        $register_id = $this->updateDB($query, $params);
-        return $register_id;
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
     }
 
-    function updateInformationBooking($id, $fullname, $date_birth, $gender, $purpose, $age)
+    function getReportOnDay($date_appointment)
     {
-        $query = "UPDATE fam_appointment SET  fullname = ?, date_birth = ?, age = ?, purpose = ?, gender = ? WHERE  aid = ?";
-        
+        $query = "CALL famville_overallBookingDay(?)";
         $params = array(
             array(
                 "param_type" => "s",
-                "param_value" => $fullname
+                "param_value" => $date_appointment
+            )
+        );
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
+    function famville_accountAppointmentInformationUpdateActivity($id, $date_birth, $age, $fullname, $purpose, $gender, $uid, $activity)
+    {
+        $query = "CALL famville_accountAppointmentInformationUpdateActivity (?,?,?,?,?,?,?,?)";
+        
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $id
             ),
             array(
                 "param_type" => "s",
                 "param_value" => $date_birth
             ),
             array(
-                "param_type" => "s",
+                "param_type" => "i",
                 "param_value" => $age
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $fullname
             ),
             array(
                 "param_type" => "s",
@@ -440,14 +617,42 @@ class famVille extends DBController
                 "param_value" => $gender
             ),
             array(
+                "param_type" => "i",
+                "param_value" => $uid
+            ),
+            array(
                 "param_type" => "s",
-                "param_value" => $id
+                "param_value" => $activity
             )
         );
-    
-        $register_id = $this->updateDB($query, $params);
-        return $register_id;
+        
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
     }
+
+    function cancelBookingAndActivityLog($aid,$uid,$activity)
+    {
+        $query = "CALL famville_accountAppointmentCancelUpdateActivity (?,?,?)";
+        
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $aid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $activity
+            )
+        );
+        
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
+    }
+
 
     function deleteBooking($aid)
     {
@@ -479,27 +684,33 @@ class famVille extends DBController
         return $AccountResult;
     }
 
-    function activityLog($uid,$activity)
+    
+    function updateBookingAndActivityLog($id,$doa,$uid,$activity)
     {
-        date_default_timezone_set('Asia/Manila');
-         $query = "INSERT INTO fam_user_activity (uid, activity, date_created) VALUES (?, ?, ?)";
+        $query = "CALL famville_accountAppointmentUpdateActivity(?,?,?,?)";
+        
         $params = array(
             array(
+                "param_type" => "i",
+                "param_value" => $id
+            ),
+            array(
                 "param_type" => "s",
+                "param_value" => $doa
+            ),
+            array(
+                "param_type" => "i",
                 "param_value" => $uid
             ),
             array(
                 "param_type" => "s",
                 "param_value" => $activity
-            ),
-            array(
-                "param_type" => "s",
-                "param_value" => date("Y-m-d")
             )
+
         );
-        
-        $appointment_id = $this->insertDB($query, $params);
-        return $appointment_id;
+
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
     }
 
     function updateInformationAccount($username, $email, $contact, $address, $uid)
@@ -533,18 +744,17 @@ class famVille extends DBController
         return $register_id;
     }
 
-    function acceptBooking($fullname, $dob, $age, $purpose, $purpose_description, $gender, $doa, $uid, $pid, $fromIns)
+    function acceptBooking($fullname, $dob, $age, $purpose, $purpose_description, $gender, $doa, $uid, $pid, $fromIns, $activity)
     {
         date_default_timezone_set('Asia/Manila');
-        $query = "INSERT INTO fam_appointment (pid, uid, date_birth, age, fullname, purpose, purpose_description, gender, schedule_date, status, fromIns, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'BOOKED', ?, ?)";
-        $code = rand(666666,999999);
+        $query = "CALL famville_accountAppointmentBooking (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = array(
             array(
                 "param_type" => "s",
                 "param_value" => $pid
             ),
             array(
-                "param_type" => "s",
+                "param_type" => "i",
                 "param_value" => $uid
             ),
             array(
@@ -552,7 +762,7 @@ class famVille extends DBController
                 "param_value" => $dob
             ),
             array(
-                "param_type" => "s",
+                "param_type" => "i",
                 "param_value" => $age
             ),
             array(
@@ -571,22 +781,22 @@ class famVille extends DBController
                 "param_type" => "s",
                 "param_value" => $gender
             ),
-             array(
-                "param_type" => "s",
-                "param_value" => $doa
-             ),
-              array(
-                "param_type" => "s",
-                "param_value" => $fromIns
-             ),
             array(
                 "param_type" => "s",
-                "param_value" => date("Y-m-d")
+                "param_value" => $doa
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $fromIns
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $activity
             )
         );
         
-        $appointment_id = $this->insertDB($query, $params);
-        return $appointment_id;
+        $AppointmentResult = $this->getDBResult($query, $params);
+        return $AppointmentResult;
     }
  
 }
