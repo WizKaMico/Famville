@@ -493,6 +493,21 @@ class famVille extends DBController
         return $AccountResult;
     }
 
+    function getAllUpcomingAppointmentHistoryForPatient($uid)
+    {
+        $query = "CALL famville_getAllUpcomingAppointmentHistoryForPatient(?)";
+        
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $uid
+            )
+        );
+        
+        $AccountResult = $this->getDBResult($query, $params);
+        return $AccountResult;
+    }
+
     function patientAccountHistory($uid)
     {
         $query = "CALL famville_patientAccountHistory(?)";

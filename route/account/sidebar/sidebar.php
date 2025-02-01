@@ -104,6 +104,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="?view=HISTORY"  style="text-decoration:none;">
+                        <i class="fa fa-book"></i>
+                        Appointment History
+                    </a>
+                </li>
+                <li>
                     <a href="?view=BOOK"  style="text-decoration:none;">
                         <i class="fa fa-calendar"></i>
                         Book Appointment

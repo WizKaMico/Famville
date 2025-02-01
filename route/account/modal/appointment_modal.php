@@ -96,9 +96,18 @@
                             </div>
                             <div class="col-sm-12">
                                 <select name="purpose" class="form-control" required="">
-                                    <option value="<?php echo $value['purpose']; ?>"><?php echo $value['purpose']; ?>
-                                        (CURRENT)</option>
-                                    <option value="CHECKUP">CHECKUP</option>
+                                   <?php 
+                                     $purpose = $portCont->showPurpose();
+                                     if (!empty($purpose)) {
+                                         foreach ($purpose as $key => $Evalue) {
+                                          if($value['purpose'] == $Evalue['purpose'])
+                                           {
+                                     ?>
+                                   <option value="<?php echo $Evalue['purpose']; ?>"><?php echo $Evalue['purpose']; ?> (CURRENT)</option>
+                                   <?php } else { ?>
+                                    <option value="<?php echo $Evalue['purpose']; ?>"><?php echo $Evalue['purpose']; ?></option>
+                                   <?php } ?>
+                                   <?php } } ?>
                                 </select>
                             </div>
                         </div>
@@ -110,6 +119,40 @@
                 <button type="submit" name="edit" class="btn btn-success"><span
                         class="glyphicon glyphicon-check"></span> Update</a>
                     </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Delete -->
+<div class="modal fade mt-5" id="cancelBookingPatient_<?php echo $value['aid']; ?>" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-center">Are you sure you want to cancel the appointment for
+                    <?php echo $value['purpose']; ?></h5>
+
+                    <!-- comment out this if incase of emergency -->
+                    <!-- <div class="row form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label modal-label">Reason for cancellation:</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea col="10" rows="5" class="form-control"></textarea>
+                            </div>
+                        </div> -->
+                    <!-- comment out this if incase of emergency -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span> Cancel</button>
+                <a href="?view=BOOK&action=CANCEL&id=<?php echo $value['aid']; ?>" class="btn btn-danger"><span
+                        class="glyphicon glyphicon-trash"></span> Yes</a>
             </div>
 
         </div>
@@ -252,28 +295,7 @@
 
 
 
-<!-- Delete -->
-<div class="modal fade mt-5" id="delete_<?php echo $value['aid']; ?>" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h5 class="text-center">Are you sure you want to cancel the appointment for
-                    <?php echo $value['purpose']; ?></h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span> Cancel</button>
-                <a href="?view=BOOK&action=CANCEL&id=<?php echo $value['aid']; ?>" class="btn btn-danger"><span
-                        class="glyphicon glyphicon-trash"></span> Yes</a>
-            </div>
 
-        </div>
-    </div>
-</div>
 
 <!-- NOTIFY SMS -->
 

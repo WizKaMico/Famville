@@ -32,7 +32,7 @@
                                             <td>
                                                 <a href='#edit_".$value['aid']."' class='btn btn-success btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-calendar'></i></span> Reschedule</a>
                                                 <a href='#information_".$value['aid']."' class='btn btn-warning btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-user'></i></span> Information</a>
-                                                <a href='#delete_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
+                                                <a href='#cancelBookingPatient_".$value['aid']."' class='btn btn-danger btn-sm' data-toggle='modal' data-backdrop='false'> <i class='fa fa-close'></i></span> Cancel</a>
                                             </td>
                                         </tr>";
                                         include('../route/account/modal/appointment_modal.php');

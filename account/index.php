@@ -566,6 +566,10 @@ if(!empty($_GET['action']))
                                 include('../route/account/notice/notice.php');
                                 include('../route/account/content/patient/dashboard.php');
                                 break;
+                              case "HISTORY":
+                                include('../route/account/notice/notice.php');
+                                include('../route/account/content/patient/history.php');
+                                break;
                               case "BOOK":
                                 include('../route/account/content/patient/book.php');
                                 include('../assets/css/book.php');
@@ -630,6 +634,9 @@ if(!empty($_GET['action']))
                     loadScript('../assets/js/ap.js');
                     break;
                 case 'PATIENT':
+                    loadScript('../assets/js/dt.js');
+                    break;
+                case 'HISTORY':
                     loadScript('../assets/js/dt.js');
                     break;
                 case 'ACCOUNTHISTORY':

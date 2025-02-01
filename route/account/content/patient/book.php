@@ -17,7 +17,7 @@
                          </div>
                          <div class="mb-3">
                              <label for="dob" class="form-label">Date of Birth:</label>
-                             <input type="date" class="form-control" id="dob" placeholder="Enter Date of Birth"
+                             <input type="date" class="form-control" id="dob" min="2008-01-01" placeholder="Enter Date of Birth"
                                  name="dob">
                          </div>
                          <div class="mb-3">
@@ -60,7 +60,7 @@
          </div>
      </div>
  </div>
- <div class="row">
+ <!-- <div class="row">
      <div class="col-md-12">
          <div class="main-card mb-3 card">
              <div class="card-header">Follow-up Suggestions</div>
@@ -69,4 +69,11 @@
              </div>
          </div>
      </div>
- </div>
+ </div> -->
+
+ <script>
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const maxDate = `${currentYear}-12-31`
+    document.getElementById('dob').setAttribute('max', maxDate)
+ </script>
