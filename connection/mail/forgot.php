@@ -425,20 +425,34 @@
         // $mail->Password = '@Devcore101213';                                   
         // $mail->SMTPSecure = 'tls';                           
         // $mail->Port = 587;    
+        // $mail->Host = 'smtp.gmail.com';                       // Outlook SMTP server
+        // $mail->SMTPAuth = true;                                // Enable SMTP authentication
+        // $mail->Username = 'revcoreitsolution@gmail.com';   // Your Outlook email address
+        // $mail->Password = 'ivru frfb tmts tswe';                 // Use your generated App Password if 2FA is enabled
+        // $mail->SMTPSecure = "ssl";     // Use STARTTLS encryption
+        // $mail->Port = 465;                                  
+
+        // //Send Email
+        // $mail->setFrom('revcoreitsolution@gmail.com');
+        
+        // //Recipients
+        // $mail->addAddress($emailAccount);              
+        // $mail->addReplyTo('revcoreitsolution@gmail.com');
+        
         $mail->Host = 'smtp.gmail.com';                       // Outlook SMTP server
         $mail->SMTPAuth = true;                                // Enable SMTP authentication
-        $mail->Username = 'revcoreitsolution@gmail.com';   // Your Outlook email address
-        $mail->Password = 'ivru frfb tmts tswe';                 // Use your generated App Password if 2FA is enabled
-        $mail->SMTPSecure = "ssl";     // Use STARTTLS encryption
-        $mail->Port = 465;                                  
-
-        //Send Email
-        $mail->setFrom('revcoreitsolution@gmail.com');
+        $mail->Username = 'familyvilleofficial@gmail.com';  // Your Gmail address
+        $mail->Password = 'tnlv anhp kxpe unrn';    // Your Gmail App Password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+    
+        // Sender & Recipient
+        $mail->setFrom('familyvilleofficial@gmail.com', 'famville'); // Your email
         
         //Recipients
         $mail->addAddress($emailAccount);              
-        $mail->addReplyTo('revcoreitsolution@gmail.com');
-        
+        $mail->addReplyTo('familyvilleofficial@gmail.com');
+
         //Content
         $mail->isHTML(true);                                  
         $mail->Subject = $subject;
